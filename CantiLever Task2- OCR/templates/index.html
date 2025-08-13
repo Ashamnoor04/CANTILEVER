@@ -1,0 +1,65 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OCR Text Extractor</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Inter', sans-serif;
+            }
+            .result-box {
+                white-space: pre-wrap; /* Preserves whitespace and newlines */
+                word-wrap: break-word; /* Breaks long words */
+            }
+        </style>
+    </head>
+    <body class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen">
+        <div class="container mx-auto p-4 md:p-8 max-w-2xl">
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <h1 class="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900">Text Detection & Extraction</h1>
+                <p class="text-center text-gray-600 mb-8">Upload an image to automatically extract the text using Tesseract OCR.</p>
+
+                <!-- Upload Form -->
+                <form method="post" enctype="multipart/form-data" class="mb-8 p-6 border-2 border-dashed border-gray-300 rounded-lg text-center hover:border-blue-500 transition-colors">
+                    <label for="file-upload" class="cursor-pointer">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span class="mt-2 block text-sm font-medium text-gray-900">Click to upload an image</span>
+                        <span class="block text-xs text-gray-500">PNG, JPG, JPEG, GIF</span>
+                    </label>
+                    <input id="file-upload" name="file" type="file" class="sr-only" onchange="this.form.submit()">
+                </form>
+
+                <!-- Error Display -->
+                {% if error %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                        <strong class="font-bold">Error:</strong>
+                        <span class="block sm:inline">{{ error }}</span>
+                    </div>
+                {% endif %}
+
+                <!-- Results Section -->
+                {% if extracted_text is defined %}
+                <div class="space-y-8">
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-4 text-gray-900">Uploaded Image</h2>
+                        <img src="{{ img_path }}" alt="Uploaded Image" class="w-full h-auto rounded-lg shadow-md">
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-4 text-gray-900">Extracted Text</h2>
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 result-box">
+                            <p>{{ extracted_text if extracted_text else "No text could be extracted." }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </body>
+    </html>
+    
